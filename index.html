@@ -1,110 +1,18 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#173b2b">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="stylesheet" href="style.css">
-<title>Swarajya Cafe Hisab-Kitab</title>
-</head>
-<body>
-<div id="login" class="login">
-<h1>SWARAJYA CAFE</h1>
-<p>Hisab-Kitab & Digital Loyalty</p>
-<form id="loginForm">
-<input id="email" type="email" placeholder="Login email" required>
-<input id="password" type="password" placeholder="Password" required>
-<button>Login</button>
-<p id="loginMsg"></p>
-</form>
-</div>
-<div id="app" hidden>
-<header>
-<b>SWARAJYA CAFE</b>
-<button id="logout">Logout</button>
-</header>
-<nav>
-<button data-tab="home">Overview</button>
-<button data-tab="sales">Sales</button>
-<button data-tab="expenses">Expenses</button>
-<button data-tab="udhar">Udhar</button>
-<button data-tab="loyalty">Loyalty</button>
-<button data-tab="history">History</button>
-</nav>
-<main>
-<section id="home" class="tab">
-<h2>Today's Overview</h2>
-<div class="cards">
-<article>Sales<strong id="salesTotal">₹0</strong></article>
-<article>Expenses<strong id="expenseTotal">₹0</strong></article>
-<article>Net<strong id="netTotal">₹0</strong></article>
-<article>Udhar due<strong id="dueTotal">₹0</strong></article>
-</div>
-<p class="hint">Your cafe entries are stored in your connected Supabase database.</p>
-</section>
-<section id="sales" class="tab" hidden>
-<h2>Daily Sales</h2>
-<form id="salesForm" class="form">
-<label>Date<input name="entry_date" type="date" required></label>
-<label>Small tea quantity (₹7)<input name="small_qty" type="number" min="0" value="0"></label>
-<label>Big tea quantity (₹12)<input name="big_qty" type="number" min="0" value="0"></label>
-<label>Other sales ₹<input name="other_amount" type="number" min="0" value="0"></label>
-<label>Payment mode<select name="payment_mode"><option>Cash</option><option>UPI</option><option>Mixed</option></select></label>
-<label>Note<input name="note"></label>
-<button>Save sale</button>
-</form>
-<div id="salesRows"></div>
-</section>
-<section id="expenses" class="tab" hidden>
-<h2>Daily Expenses</h2>
-<form id="expenseForm" class="form">
-<label>Date<input name="entry_date" type="date" required></label>
-<label>Expense title<input name="title" required placeholder="Milk, gas, etc."></label>
-<label>Amount ₹<input name="amount" type="number" min="0.01" step=".01" required></label>
-<label>Payment mode<select name="payment_mode"><option>Cash</option><option>UPI</option></select></label>
-<label>Note<input name="note"></label>
-<button>Save expense</button>
-</form>
-<div id="expenseRows"></div>
-</section>
-<section id="udhar" class="tab" hidden>
-<h2>Udhar Management</h2>
-<form id="udharForm" class="form">
-<label>Date<input name="entry_date" type="date" required></label>
-<label>Customer name<input name="customer_name" required></label>
-<label>Mobile<input name="mobile" required inputmode="numeric"></label>
-<label>Amount ₹<input name="amount" type="number" min=".01" step=".01" required></label>
-<label>Entry type<select name="kind"><option value="given">Udhar given</option><option value="paid">Payment received</option></select></label>
-<label>Note<input name="note"></label>
-<button>Save udhar</button>
-</form>
-<div id="udharRows"></div>
-</section>
-<section id="loyalty" class="tab" hidden>
-<h2>Digital Loyalty Card</h2>
-<p>6 chai stamps = 1 free chai</p>
-<form id="stampForm" class="form">
-<label>Customer name<input name="customer_name" required></label>
-<label>Mobile number<input name="mobile" required inputmode="numeric"></label>
-<label>Stamps to add<input name="stamps" type="number" min="1" max="20" value="1"></label>
-<button>Add stamp</button>
-</form>
-<form id="findForm" class="search">
-<input name="mobile" placeholder="Find customer by mobile" required>
-<button>Search</button>
-</form>
-<div id="loyaltyCard"></div>
-</section>
-<section id="history" class="tab" hidden>
-<h2>History</h2>
-<p id="historyNote">History is view-only for staff. Owner permissions are controlled by database policies.</p>
-<div id="historyRows"></div>
-</section>
-</main>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js"></script>
-</body>
-</html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#173b2b"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="/icon-192.png"><link rel="stylesheet" href="style.css">
+<title>Swarajya Cafe | Hisab-Kitab</title></head><body>
+<div id="login" class="login-shell"><div class="brand-mark">SC</div><p class="eyebrow">SWARAJYA CAFE</p><h1>Welcome back</h1><p class="muted">Sign in to manage your cafe</p>
+<form id="loginForm" class="panel form-stack"><label>Login email<input id="email" type="email" autocomplete="username" required placeholder="Enter email"></label><label>Password<input id="password" type="password" autocomplete="current-password" required placeholder="Enter password"></label><button class="btn btn-primary">Login to dashboard</button><p id="loginMsg" class="form-message" aria-live="polite"></p></form><p class="tiny muted">Secure cafe management</p></div>
+<div id="app" hidden><header class="topbar"><div class="brand-lockup"><div class="brand-mark small">SC</div><div><b>SWARAJYA CAFE</b><small>MANAGEMENT SUITE</small></div></div><div class="top-actions"><span id="rolePill" class="role-pill">STAFF</span><button id="logout" class="btn btn-ghost">Logout</button></div></header>
+<nav class="main-nav"><button data-tab="home" class="active">Overview</button><button data-tab="sales">Sales</button><button data-tab="expenses">Expenses</button><button data-tab="udhar">Udhar</button><button data-tab="loyalty">Loyalty</button><button data-tab="history">History</button></nav>
+<main class="app-main">
+<section id="home" class="tab"><div class="page-heading"><div><p class="eyebrow">YOUR BUSINESS AT A GLANCE</p><h1>Overview</h1><p class="muted">Today's performance and activity</p></div><span id="todayLabel" class="date-chip"></span></div><div class="metric-grid"><article class="metric-card"><span>Today's sales</span><strong id="salesTotal">₹0.00</strong><small>Gross collection</small></article><article class="metric-card"><span>Today's expenses</span><strong id="expenseTotal">₹0.00</strong><small>Daily outflow</small></article><article class="metric-card metric-featured"><span>Today's net</span><strong id="netTotal">₹0.00</strong><small>Sales minus expenses</small></article><article class="metric-card"><span>Udhar balance</span><strong id="dueTotal">₹0.00</strong><small>Outstanding amount</small></article></div><div class="section-heading"><div><h2>Quick actions</h2><p class="muted">Common cafe operations</p></div></div><div class="quick-grid"><button class="quick-action" data-go="sales"><span>＋</span><b>Add sale</b><small>Record today's sales</small></button><button class="quick-action" data-go="expenses"><span>↗</span><b>Add expense</b><small>Track cafe spending</small></button><button class="quick-action" data-go="udhar"><span>◷</span><b>Manage udhar</b><small>Customer balances</small></button><button class="quick-action" data-go="loyalty"><span>✦</span><b>Loyalty requests</b><small>Approve chai stamps</small></button></div></section>
+<section id="sales" class="tab" hidden><div class="page-heading"><div><p class="eyebrow">REVENUE</p><h1>Daily sales</h1><p class="muted">Record tea and other sales</p></div></div><form id="salesForm" class="panel data-form"><label>Date<input name="entry_date" type="date" required></label><label>Small tea quantity <span class="field-hint">₹7 each</span><input name="small_qty" type="number" min="0" value="0"></label><label>Big tea quantity <span class="field-hint">₹12 each</span><input name="big_qty" type="number" min="0" value="0"></label><label>Other sales (₹)<input name="other_amount" type="number" min="0" step=".01" value="0"></label><label>Payment mode<select name="payment_mode"><option>Cash</option><option>UPI</option><option>Mixed</option></select></label><label class="full-field">Note<input name="note" placeholder="Add a short note"></label><button class="btn btn-primary full-field">Save sale</button></form><div class="section-heading"><h2>Recent sales</h2></div><div id="salesRows" class="record-list"></div></section>
+<section id="expenses" class="tab" hidden><div class="page-heading"><div><p class="eyebrow">OUTGOINGS</p><h1>Daily expenses</h1><p class="muted">Track cafe costs</p></div></div><form id="expenseForm" class="panel data-form"><label>Date<input name="entry_date" type="date" required></label><label>Expense title<input name="title" required placeholder="Milk, gas, etc."></label><label>Amount (₹)<input name="amount" type="number" min=".01" step=".01" required></label><label>Payment mode<select name="payment_mode"><option>Cash</option><option>UPI</option></select></label><label class="full-field">Note<input name="note"></label><button class="btn btn-primary full-field">Save expense</button></form><div class="section-heading"><h2>Recent expenses</h2></div><div id="expenseRows" class="record-list"></div></section>
+<section id="udhar" class="tab" hidden><div class="page-heading"><div><p class="eyebrow">CUSTOMER CREDIT</p><h1>Udhar management</h1><p class="muted">Track credit and payments</p></div></div><form id="udharForm" class="panel data-form"><label>Date<input name="entry_date" type="date" required></label><label>Customer name<input name="customer_name" required></label><label>Mobile number<input name="mobile" required inputmode="numeric"></label><label>Amount (₹)<input name="amount" type="number" min=".01" step=".01" required></label><label>Entry type<select name="kind"><option value="given">Udhar given</option><option value="paid">Payment received</option></select></label><label class="full-field">Note<input name="note"></label><button class="btn btn-primary full-field">Save udhar entry</button></form><div class="section-heading"><h2>Recent entries</h2></div><div id="udharRows" class="record-list"></div></section>
+<section id="loyalty" class="tab" hidden><div class="page-heading"><div><p class="eyebrow">REPEAT CUSTOMER REWARDS</p><h1>Digital loyalty</h1><p class="muted">6 approved chai stamps unlock 1 free chai</p></div></div><div class="loyalty-layout"><div class="panel qr-panel"><div class="section-heading"><div><h2>Your cafe QR</h2><p class="muted">Customers scan this at the counter</p></div></div><div id="cafeQr" class="qr-code"><span class="muted">QR will appear here</span></div><p id="qrUrl" class="tiny muted"></p><button id="copyQrLink" class="btn btn-secondary" type="button">Copy customer link</button><p class="tiny muted">Print this QR and place it at the counter.</p></div><div class="panel"><div class="section-heading"><div><h2>Pending approvals</h2><p class="muted">Owner or staff can approve a visit</p></div><span id="pendingCount" class="count-pill">0</span></div><div id="pendingRequests" class="record-list"><p class="muted">Loading requests…</p></div><button id="refreshRequests" class="btn btn-secondary" type="button">Refresh requests</button></div></div><div class="panel lookup-panel"><div class="section-heading"><div><h2>Find a loyalty customer</h2><p class="muted">Search by mobile number</p></div></div><form id="findForm" class="search-form"><input name="mobile" placeholder="10-digit mobile number" inputmode="numeric" required><button class="btn btn-primary">Search</button></form><div id="loyaltyCard"></div></div></section>
+<section id="history" class="tab" hidden><div class="page-heading"><div><p class="eyebrow">AUDIT TRAIL</p><h1>History</h1><p id="historyNote" class="muted">History records</p></div></div><div id="historyRows" class="record-list"></div></section>
+</main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="app.js"></script></body></html>
