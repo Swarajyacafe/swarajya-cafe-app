@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4b210f"><title>Order Chai | Swarajya Cafe</title>
+<style>
+:root{--brown:#4b210f;--brown2:#783719;--gold:#e7b96d;--cream:#fff8ed;--ink:#2e2119;--muted:#806f60;--line:#eadbc8;--green:#20734a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#fff8ed,#f2e4d2);color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{background:linear-gradient(125deg,#351608,#783719 70%,#a65b2c);color:#fff;padding:24px 18px 32px;text-align:center;border-bottom:4px solid var(--gold)}
+.logo{width:68px;height:68px;margin:0 auto 10px;border:1px solid #f3d8a7;border-radius:50%;display:grid;place-items:center;font-size:34px;background:#ffffff12}
+h1{font-size:26px;letter-spacing:.3px;margin:0}header p{margin:6px 0 0;color:#f7e4cc;font-size:13px;letter-spacing:1.2px}
+main{width:min(100% - 28px,480px);margin:-17px auto 28px;position:relative}.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 12px 35px #4b210f14}
+.kicker{text-align:center;color:var(--brown2);font-size:12px;font-weight:800;letter-spacing:1.6px}.cup{font-size:48px;text-align:center;margin:8px 0 0;animation:steam 2.4s ease-in-out infinite}@keyframes steam{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+h2{text-align:center;font-size:21px;margin:5px 0 4px}.sub{text-align:center;color:var(--muted);font-size:13px;line-height:1.5;margin:0 0 22px}
+label{display:block;font-size:13px;font-weight:700;margin:14px 0 8px}.qty{display:flex;align-items:center;justify-content:center;gap:24px;margin:14px 0 20px}.qty button{width:48px;height:48px;border:0;border-radius:50%;background:#f3e4d1;color:var(--brown);font-size:27px;font-weight:700;cursor:pointer}.qty output{font-size:34px;font-weight:800;min-width:48px;text-align:center;font-variant-numeric:tabular-nums}
+.field{width:100%;border:1px solid var(--line);border-radius:12px;padding:13px;font:inherit;background:#fff}.hint{font-size:11px;color:var(--muted);line-height:1.5}.submit{width:100%;border:0;border-radius:13px;padding:15px;background:linear-gradient(110deg,#713316,#a85b2b);color:white;font-size:16px;font-weight:800;box-shadow:0 6px 16px #71331630;margin-top:18px;cursor:pointer}.submit:disabled{opacity:.55;cursor:wait}.status{display:none;margin-top:16px;padding:13px;border-radius:12px;font-size:13px;line-height:1.5}.status.ok{display:block;background:#e9f6ee;color:#175c39;border:1px solid #c9e8d5}.status.err{display:block;background:#fff0ed;color:#922e23;border:1px solid #f2d0ca}.footer{text-align:center;color:var(--muted);font-size:11px;padding:0 16px 25px}.code{display:inline-block;background:#fff2df;border:1px solid #efd9b6;color:#75421e;border-radius:20px;padding:5px 10px;font-size:12px;margin-top:12px}
+</style>
+</head>
+<body>
+<header><div class="logo">☕</div><h1>Swarajya Cafe</h1><p>CHAI • SNACKS • GOOD VIBES</p></header>
+<main><section class="panel">
+<div class="kicker">FRESHLY MADE • SERVED HOT</div><div class="cup" aria-hidden="true">☕</div>
+<h2>Order Your Chai</h2><p class="sub">Aapki dukaan par garma-garam chai.<br>Quantity select karke order place karein.</p>
+<div id="shopCode" class="code" hidden></div>
+<label for="quantity">Chai quantity (cups)</label>
+<div class="qty"><button type="button" id="minus" aria-label="Decrease quantity">−</button><output id="quantity">1</output><button type="button" id="plus" aria-label="Increase quantity">+</button></div>
+<p class="hint">Order place karne par aapka order Swarajya Cafe ko bheja jayega. Cafe se confirmation ka wait karein.</p>
+<button class="submit" id="placeOrder">PLACE ORDER</button>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+</section></main>
+<div class="footer">Swarajya Cafe · Kalyan<br>Made with chai & care</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script>
+<script>
+(()=>{
+ const params=new URLSearchParams(location.search),shopId=params.get('shop'),visibleCode=params.get('code');
+ const qtyOut=document.getElementById('quantity'),statusBox=document.getElementById('status'),submit=document.getElementById('placeOrder');let qty=1;
+ if(visibleCode){const c=document.getElementById('shopCode');c.textContent='SHOP QR '+visibleCode;c.hidden=false;}
+ const setQty=n=>{qty=Math.max(1,Math.min(100,n));qtyOut.textContent=String(qty)};
+ document.getElementById('minus').addEventListener('click',()=>setQty(qty-1));document.getElementById('plus').addEventListener('click',()=>setQty(qty+1));
+ function show(type,msg){statusBox.className='status '+type;statusBox.textContent=msg;}
+ submit.addEventListener('click',async()=>{
+   if(!shopId||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(shopId)){show('err','Yeh QR link sahi nahi hai. Kripya shopkeeper se naya QR scan karwayein.');return;}
+   const cfg=window.SWARAJYA_SUPABASE_CONFIG;
+   if(!cfg||!cfg.url||!cfg.anonKey||cfg.anonKey==='PASTE_SUPABASE_ANON_PUBLIC_KEY_HERE'){show('err','Ordering abhi setup ho raha hai. Kripya thodi der baad try karein.');return;}
+   submit.disabled=true;submit.textContent='SENDING ORDER…';
+   try{
+     const client=window.supabase.createClient(cfg.url,cfg.anonKey);
+     const {error}=await client.from('scan_orders').insert({shop_id:shopId,quantity:qty});
+     if(error)throw error;
+     show('ok',`Order request sent successfully! ${qty} cup(s) of chai. Swarajya Cafe se confirmation ka wait karein.`);
+     submit.textContent='ORDER SENT';
+   }catch(err){console.error(err);show('err','Order send nahi ho paya. QR active na ho sakta hai ya connection setup pending hai. Cafe staff se contact karein.');submit.disabled=false;submit.textContent='TRY AGAIN';}
+ });
+ if(!shopId)show('err','QR code missing hai. Shop ka QR code dobara scan karein.');
+})();
+</script>
+</body></html>
